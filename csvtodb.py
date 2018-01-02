@@ -37,7 +37,7 @@ def teamline(full_team,short_team):
     cur.execute("SELECT SUM(Estimate), sum(Effort) FROM t WHERE Team = '{}' AND Issue_Type = 'Bug'".format(full_team))
     bug_rows = cur.fetchall()
     clean_bug_rows=bug_rows[0]
-##    print(clean_bug_rows)
+#    print(clean_bug_rows)
     bug_estimates = int(clean_bug_rows[0] or 0)
     bug_effort = int(clean_bug_rows[1] or 0)
 
@@ -51,12 +51,23 @@ def teamline(full_team,short_team):
     clean_finished_rows=finished_rows[0]
     finished_estimates = clean_finished_rows[0]
     finished_effort = clean_finished_rows[1]
-
-    current_effort=int(current_effort)
+    if current_estimates is None:
+        current_estimates=0
+    if current_effort is None:
+        current_effort=0
     if finished_effort is None:
         finished_effort=0
     if unfinished_effort is None:
         unfinished_effort=0
+    if bug_effort is None:
+        bug_effort=0
+    current_effort=int(current_effort)
+
+#    current_estimates = 2
+#    current_effort=3
+#    finished_effort=4
+#    unfinished_effort=5
+#    bug_effort=6
 
 
     print("{0:<15s}{1:>8g}{2:>10g}{3:>12g}{4:>12g}{5:>7g}".format(short_team,\
@@ -159,6 +170,8 @@ teamline("Toolchain Team","TC")
 teamline("NBN Team","NBN")
 teamline("Transcriber","Transcriber")
 teamline("Capture Team","Capture")
+teamline("QA Team","QA")
+teamline("Crossteam","Cross Team")
 print("-" * 14,"-" * 8,"-" * 9, "-" * 11, "-" * 11,"-" * 6,)
 sumline()
 
